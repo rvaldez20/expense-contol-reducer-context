@@ -4,7 +4,7 @@ import { useBudget } from "./hooks/useBudget"
 function App() {
 
   const { state, dispatch } = useBudget()  
-  // console.log(state)
+  console.log(state)
 
   return (
     <>
