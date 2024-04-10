@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import type { DraftExpense } from '../types'
+import { useState, ChangeEvent } from 'react'
+import type { DraftExpense, Value } from '../types'
 import { categories } from "../data/categories"
 import DatePicker from 'react-date-picker'
 import 'react-date-picker/dist/DatePicker.css'
@@ -14,6 +14,24 @@ export default function ExpenseForm() {
       category: '',
       date: new Date(),
    })
+
+   const handleChange = (e:ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) => {
+      const {name, value} = e.target
+
+      //* validacion para elfield amount, debe ser number
+      const isAmountField = ['amount'].includes(name)
+      setExpense({
+         ...expense,
+         [name]: isAmountField ? Number(value) : value
+      })
+   }
+
+   const handleChangeDate = (value:Value) => {
+      setExpense({
+         ...expense,
+         date: value
+      })
+   }
 
    return (
       <form className="space-y-5">
@@ -33,6 +51,7 @@ export default function ExpenseForm() {
                className="bg-slate-100 p-2"
                name="expenseName"
                value={expense.expenseName}
+               onChange={handleChange}
             />
          </div>
 
@@ -48,6 +67,7 @@ export default function ExpenseForm() {
                className="bg-slate-100 p-2"
                name="amount"
                value={expense.amount}
+               onChange={handleChange}
             />
          </div>
 
@@ -61,6 +81,7 @@ export default function ExpenseForm() {
                id="category"
                className="text-xl bg-slate-100"
                value={expense.category}
+               onChange={handleChange}
             >
                <option value="">-- Select --</option>
                {categories.map(category => (
@@ -81,6 +102,7 @@ export default function ExpenseForm() {
             <DatePicker 
                className="bg-salte-100 p-2 border-0 bg-slate-100"
                value={expense.date}
+               onChange={handleChangeDate}
             />
          </div>
 
@@ -89,7 +111,6 @@ export default function ExpenseForm() {
             className="bg-blue-600 cursor-pointer w-full p-2 text-white uppercase font-bold rounded-lg"
             value={'Add Expense'}
          />
-
 
       </form>
    )
