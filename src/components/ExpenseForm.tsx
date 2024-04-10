@@ -1,5 +1,10 @@
-import { categories } from "../data/categories";
+import { categories } from "../data/categories"
+import DatePicker from 'react-date-picker'
+import 'react-date-picker/dist/DatePicker.css'
+import 'react-calendar/dist/Calendar.css'
 
+type ValuePiece = Date | null
+type Value = ValuePiece | [ValuePiece, ValuePiece]
 
 
 export default function ExpenseForm() {
@@ -45,7 +50,7 @@ export default function ExpenseForm() {
             <select 
                name="category" 
                id="category"
-               className="text-xl"
+               className="text-xl bg-slate-100"
             >
                <option value="">-- Select --</option>
                {categories.map(category => (
@@ -55,6 +60,16 @@ export default function ExpenseForm() {
                   >{category.name}</option>
                ))}
             </select>
+         </div>
+
+         <div className="flex flex-col gap-2">
+            <label 
+               htmlFor="amount"
+               className="text-xl"
+            >Expense Date:</label>
+            <DatePicker 
+               className="bg-salte-100 p-2 border-0 bg-slate-100"
+            />
          </div>
 
          <input 
