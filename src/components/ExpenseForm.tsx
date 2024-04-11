@@ -49,6 +49,15 @@ export default function ExpenseForm() {
          
       //* dispatch para guardar el expense en el state
       dispatch({type: 'add-expense', payload: {expense}})
+
+      //* restart the estate (clean the form)
+      setExpense({
+         amount: 0,
+         expenseName: '',
+         category: '',
+         date: new Date(),
+      })
+
    }
 
    return (
