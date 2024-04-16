@@ -11,12 +11,15 @@ import { formatDate } from "../helpers"
 import { Expense } from "../types"
 import AmountDisplay from "./AmountDisplay"
 import { categories } from "../data/categories"
+import { useBudget } from "../hooks/useBudget"
 
 type ExpenseDetailProps = {
    expense: Expense
 }
 
 export default function ExpenseDetail({expense}: ExpenseDetailProps) {
+  const {dispatch} = useBudget()
+
   const categoryInfo = useMemo(() => categories.filter(cat => cat.id === expense.category)[0], [expense])
   // console.log(`/icono_${categoryInfo.icon}.svg`) 
 
@@ -33,8 +36,8 @@ export default function ExpenseDetail({expense}: ExpenseDetailProps) {
   const trailingActions = () => (
     <TrailingActions>
       <SwipeAction
-        // destructive={true}
-        onClick={() => {console.log('Delete')}}
+        onClick={() => dispatch({type: 'remove-expense', payload:{id: expense.id}})}
+        destructive={true}
       >
         Delete
       </SwipeAction>
@@ -46,7 +49,7 @@ export default function ExpenseDetail({expense}: ExpenseDetailProps) {
 
     <SwipeableList>
       <SwipeableListItem
-        maxSwipe={30}
+        maxSwipe={1}
         leadingActions={leadingActions()}
         trailingActions={trailingActions()}
       >
