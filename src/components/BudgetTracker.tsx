@@ -4,7 +4,6 @@ import AmountDisplay from "./AmountDisplay";
 import "react-circular-progressbar/dist/styles.css"
 
 
-
 export default function BudgetTracker() {
 
    const {dispatch, state, totalExpenses, remainingBudget} = useBudget()
@@ -14,12 +13,9 @@ export default function BudgetTracker() {
    return (
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
          <div className="flex justify-center">
-
             <CircularProgressbar
-               value={porcentage}                              // porcentage to grap round number 1-100
+               value={porcentage}
                text={`${porcentage}% Gastado`}
-
-               // maxValue={1}
 
                styles={buildStyles({
                   pathColor: porcentage === 100 ? '#dc2626' : '#3b82f6',
@@ -33,7 +29,6 @@ export default function BudgetTracker() {
                   // backgroundColor: '#3e98c7',          
                })}
             />
-
          </div>
 
          <div className="flex flex-col justify-center items-center gap-8">
@@ -58,7 +53,7 @@ export default function BudgetTracker() {
             <AmountDisplay
                label="Gastado"
                amount={totalExpenses}
-            />
+            /> 
          </div>
       </div>
    )
