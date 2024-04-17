@@ -53,10 +53,17 @@ export default function ExpenseForm() {
          setError('All fields are required')
          return
       } 
-         
-      //* dispatch para guardar el expense en el state
-      dispatch({type: 'add-expense', payload: {expense}})
 
+      
+      //* Agregar o actualizar el gasto
+      if(state.editingId) {
+         //* update expense
+         dispatch({type: 'update-expense', payload: {expense: {id: state.editingId, ...expense}}})
+      } else {
+         //* add new expense
+         dispatch({type: 'add-expense', payload: {expense}})
+      }
+         
       //* restart the estate (clean the form)
       setExpense({
          amount: 0,
@@ -74,7 +81,7 @@ export default function ExpenseForm() {
       >
          <legend 
             className="uppercase text-center text-2xl font-black border-b-4 border-blue-500 py-2"
-         >New Expense</legend>
+         >{state.editingId ? 'Update Expense' : 'New Expense'}</legend>
 
          {error && <ErrorMessage>{error}</ErrorMessage>}
 
@@ -148,7 +155,7 @@ export default function ExpenseForm() {
          <input 
             type="submit" 
             className="bg-blue-600 cursor-pointer w-full p-2 text-white uppercase font-bold rounded-lg"
-            value={'Add Expense'}
+            value={state.editingId ? 'Save Changes' : 'Record Expense'}
          />
 
       </form>
