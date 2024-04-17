@@ -1,17 +1,39 @@
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar'
 import { useBudget } from "../hooks/useBudget";
 import AmountDisplay from "./AmountDisplay";
+import "react-circular-progressbar/dist/styles.css"
 
 
 
 export default function BudgetTracker() {
 
    const {state, totalExpenses, remainingBudget} = useBudget()
-   
+
+   const porcentage = +((totalExpenses / state.budget) * 100).toFixed(2)
 
    return (
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
          <div className="flex justify-center">
-            <img src="/grafico.jpg" alt="Grafica de gastos" />
+
+            <CircularProgressbar
+               value={porcentage}                              // porcentage to grap round number 1-100
+               text={`${porcentage}% Gastado`}
+
+               // maxValue={1}
+
+               styles={buildStyles({
+                  pathColor: porcentage === 100 ? '#dc2626' : '#3b82f6',
+                  trailColor: '#f5f5f5',        // color la prate no graficada
+                  textSize: 10,                  
+                  textColor: porcentage === 100 ? '#dc2626' : '#3b82f6',
+                  strokeLinecap: 'butt',
+
+                  // rotation: 0.25,
+                  // pathTransitionDuration: 0.5,
+                  // backgroundColor: '#3e98c7',          
+               })}
+            />
+
          </div>
 
          <div className="flex flex-col justify-center items-center gap-8">
@@ -22,21 +44,21 @@ export default function BudgetTracker() {
                Reset App
             </button>
 
-            <AmountDisplay 
+            <AmountDisplay
                label="Presupuesto"
                amount={state.budget}
             />
 
-            <AmountDisplay 
+            <AmountDisplay
                label="Disponible"
                amount={remainingBudget}
             />
 
-            <AmountDisplay 
+            <AmountDisplay
                label="Gastado"
                amount={totalExpenses}
             />
-            
+
             {Math.floor((totalExpenses / remainingBudget) * 100)}
 
          </div>
