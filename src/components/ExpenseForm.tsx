@@ -71,7 +71,6 @@ export default function ExpenseForm() {
          category: '',
          date: new Date(),
       })
-
    }
 
    return (
