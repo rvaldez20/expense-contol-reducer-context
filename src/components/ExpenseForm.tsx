@@ -9,7 +9,7 @@ import { useBudget } from '../hooks/useBudget'
 
 
 export default function ExpenseForm() {
-
+   
    const [expense, setExpense] = useState<DraftExpense>({
       amount: 0,
       expenseName: '',
@@ -17,12 +17,14 @@ export default function ExpenseForm() {
       date: new Date(),
    })
    const [error, setError] = useState('')
-   const {dispatch, state} = useBudget()
+   const [previousAmount, setPreviousAmount] = useState(0)
+   const {dispatch, state, remainingBudget} = useBudget()
 
    useEffect(() => {
       if(state.editingId) {
          const editingExpense = state.expenses.filter(currentExpense => currentExpense.id === state.editingId)[0]
          setExpense(editingExpense)
+         setPreviousAmount(editingExpense.amount)
       }
    }, [state.editingId])
 
@@ -48,11 +50,17 @@ export default function ExpenseForm() {
    const handleSubmit = (e:FormEvent<HTMLFormElement>) => {
       e.preventDefault()
       
-      //* Validacion
+      //* Validacion que se llenen todos los campos
       if(Object.values(expense).includes('')) {
          setError('All fields are required')
          return
       } 
+
+      //* validar que no sobrepasemos el presupuesto
+      if( (expense.amount - previousAmount) > remainingBudget) {
+         setError('This expense exceeds the budget')
+         return
+      }
 
       
       //* Agregar o actualizar el gasto
@@ -71,6 +79,7 @@ export default function ExpenseForm() {
          category: '',
          date: new Date(),
       })
+      setPreviousAmount(0)
    }
 
    return (
